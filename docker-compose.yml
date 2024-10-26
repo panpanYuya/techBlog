@@ -1,0 +1,16 @@
+services:
+    front:
+        container_name: tech-blog-front
+        build:
+            context: .
+            dockerfile: ./front/Dockerfile
+        volumes:
+            - ./front:/src
+            - node_modules_volume:/front/node_modules
+        command: sh -c "npm start"
+        ports:
+            - "3000:3000"
+        environment:
+            - CHOKIDIR_USEPOLLING=true
+volumes:
+    node_modules_volume:
