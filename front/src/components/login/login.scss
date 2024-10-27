@@ -1,0 +1,58 @@
+// コンテナのスタイル（中央に配置するため）
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0 20px;
+}
+
+// ログイン画像のスタイル
+.login-image {
+    width: 60%; // デフォルトで画面の60%幅に設定
+    max-width: 300px; // 最大幅を300pxに制限
+    height: auto;
+    margin-bottom: 50px;
+
+    // レスポンシブでマージンを調整
+    @media (max-width: 1280px) {
+        margin-bottom: 40px;
+    }
+
+    @media (max-width: 768px) {
+        margin-bottom: 30px;
+    }
+
+    @media (max-width: 480px) {
+        margin-bottom: 20px;
+    }
+}
+
+// ログインボタンのスタイル
+.login-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff; // ボタンの背景色
+    border: none;
+    border-radius: 5px; // 角を丸く
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+        background-color: #0056b3; // ホバー時の背景色
+        transform: scale(1.05); // ホバー時に少し拡大
+    }
+
+    &:active {
+        background-color: #004494; // クリック時の背景色
+        transform: scale(0.95); // クリック時に少し縮小
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); // フォーカス時のアウトライン
+    }
+}
