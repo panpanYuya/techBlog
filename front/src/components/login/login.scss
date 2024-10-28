@@ -6,6 +6,15 @@
     align-items: center;
     height: 100vh;
     padding: 0 20px;
+
+    .error-message {
+        color: #f44336;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        text-align: center;
+    }
 }
 
 // ログイン画像のスタイル
