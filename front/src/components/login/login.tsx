@@ -7,13 +7,9 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     const signIn = () => {
-        signInWithPopup(auth, provider)
-            .then(() => {
-                console.log("loginに成功しました。");
-            })
-            .catch((error) => {
-                setErrorMessage("ログインに失敗しました。");
-            });
+        signInWithPopup(auth, provider).catch((error) => {
+            setErrorMessage("ログインに失敗しました。");
+        });
     };
 
     return (
