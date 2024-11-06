@@ -33,7 +33,6 @@ const List = () => {
                     content: doc.data().content,
                     updateAt: doc.data().updateAt,
                 });
-                console.log(`doc${JSON.stringify(doc.id)}`);
             });
             setArticles(articleCollection);
         });
