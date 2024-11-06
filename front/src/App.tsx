@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
 import Login from "./components/login/login";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import List from "./components/list/list";
 import { auth } from "./firebase";
 import { login, logout } from "./features/userSlice";
+import Header from "./components/header/header";
+import Search from "./components/search/search";
 
 function App() {
     const user = useAppSelector((state) => state.user.user);
@@ -27,7 +28,19 @@ function App() {
         });
     }, [dispatch]);
 
-    return <div>{user ? <List /> : <Login />}</div>;
+    return (
+        <div>
+            {user ? (
+                <>
+                    <Header />
+                    <Search />
+                    <List />
+                </>
+            ) : (
+                <Login />
+            )}
+        </div>
+    );
 }
 
 export default App;
