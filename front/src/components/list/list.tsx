@@ -18,13 +18,14 @@ interface Articles {
 }
 
 const List = () => {
+    //取得した記事データを格納するためのステート
     const [articles, setArticles] = useState<Articles[]>([]);
 
     const collectionRef: Query<DocumentData> = query(collection(db, "posts"));
-    //カスタムhooksを使用して、Firbaseから取得
+    //カスタムHooks使用して、Firbaseからリアルタイムで取得
     const { data: articleData, error } = useCollection(collectionRef);
 
-    //記事一覧を取得
+    //カスタムHooksから取得した値をArticle型に変換し、記事一覧にセット
     useEffect(() => {
         const articleCollection: Articles[] = articleData.map((article) => ({
             id: article.id,

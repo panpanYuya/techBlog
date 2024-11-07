@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 
 /**
  *
- * 指定したコレクションのドキュメントを全て取得
- * @param collectionRef query(collection(DB情報, "コレクション名"))
- * @returns Collectionのドキュメントを変換
+ * 指定したコレクションからリアルタイムでドキュメントを全て取得し、エラーが発生した場合にはエラーメッセージを返却
+ * OnSnapshotを使用し、リアルタイムでFirebaseを監視している
+ * @param collectionRef: query(collection(DB情報, "コレクション名"))
+ * @returns データとエラーメッセージを含むオブジェクト { data, error }
  */
 const useCollection = (collectionRef: Query<DocumentData>) => {
+    //コレクションから取得したデータを格納するステート
     const [data, setData] = useState<DocumentData[]>([]);
+    //エラーメッセージを格納するステート
     const [error, setError] = useState<string | null>();
 
     useEffect(() => {
@@ -21,7 +24,6 @@ const useCollection = (collectionRef: Query<DocumentData>) => {
                     }
                 );
                 setData(getData);
-                return data;
             },
             (error) => {
                 setError(error.message);
