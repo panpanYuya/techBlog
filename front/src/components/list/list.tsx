@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
 import "./list.scss";
 import {
     collection,
     DocumentData,
-    onSnapshot,
     Query,
     query,
     Timestamp,
@@ -20,24 +19,30 @@ interface Articles {
 
 const List = () => {
     const [articles, setArticles] = useState<Articles[]>([]);
-    const collectionRef: Query<DocumentData> = query(collection(db, "posts"));
 
+    const collectionRef: Query<DocumentData> = query(collection(db, "posts"));
+    //カスタムhooksを使用して、Firbaseから取得
     const { data: articleData, error } = useCollection(collectionRef);
+
+    //記事一覧を取得
     useEffect(() => {
-        const articleCollection: Articles[] = [];
-        articleData.map((article) => {
-            articleCollection.push({
-                id: article.id,
-                title: article.title,
-                content: article.content,
-                updateAt: article.updateAt,
-            });
-        });
+        const articleCollection: Articles[] = articleData.map((article) => ({
+            id: article.id,
+            title: article.title,
+            content: article.content,
+            updateAt: article.updateAt,
+        }));
         setArticles(articleCollection);
-    });
+    }, [articleData]);
+
+    // エラーが存在する場合はエラーメッセージを表示
+    if (error) {
+        return <div className="error-message">Error: {error}</div>;
+    }
 
     return (
         <div className="article-list">
+            {/* ログアウトボタン仮置き、ブランチを切って再度修正予定 */}
             <button onClick={() => auth.signOut()}>ログアウト</button>
             {articles.map((article) => {
                 return (
