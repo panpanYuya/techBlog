@@ -9,6 +9,7 @@ import {
     query,
     Timestamp,
 } from "firebase/firestore";
+import useCollection from "../../hooks/useCollection";
 
 interface Articles {
     id: string;
@@ -21,22 +22,19 @@ const List = () => {
     const [articles, setArticles] = useState<Articles[]>([]);
     const collectionRef: Query<DocumentData> = query(collection(db, "posts"));
 
-    //値に変更が発生し、レンダリングがずっと行われてしまう
-    //そのため、useEffectを使用して、値が更新されなければ、レンダリングがされないようにする必要がある
+    const { data: articleData, error } = useCollection(collectionRef);
     useEffect(() => {
         const articleCollection: Articles[] = [];
-        onSnapshot(collectionRef, (querySnapShot) => {
-            querySnapShot.docs.forEach((doc) => {
-                articleCollection.push({
-                    id: doc.id,
-                    title: doc.data().title,
-                    content: doc.data().content,
-                    updateAt: doc.data().updateAt,
-                });
+        articleData.map((article) => {
+            articleCollection.push({
+                id: article.id,
+                title: article.title,
+                content: article.content,
+                updateAt: article.updateAt,
             });
-            setArticles(articleCollection);
         });
-    }, []);
+        setArticles(articleCollection);
+    });
 
     return (
         <div className="article-list">
