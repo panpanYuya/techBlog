@@ -19,9 +19,10 @@ const useCollection = (collectionRef: Query<DocumentData>) => {
             collectionRef,
             (querySnapShot) => {
                 const getData: DocumentData[] = querySnapShot.docs.map(
-                    (doc: DocumentData) => {
-                        return doc.data();
-                    }
+                    (doc: DocumentData) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    })
                 );
                 setData(getData);
             },
