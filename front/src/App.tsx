@@ -7,6 +7,8 @@ import { auth } from "./firebase";
 import { login, logout } from "./features/userSlice";
 import Header from "./components/header/header";
 import Search from "./components/search/search";
+import Detail from "./components/detail/detail";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
     const user = useAppSelector((state) => state.user.user);
@@ -34,7 +36,12 @@ function App() {
                 <>
                     <Header />
                     <Search />
-                    <List />
+                    <Router>
+                        <Routes>
+                            <Route path="/" element={<List />} />
+                            <Route path="/detail" element={<Detail />} />
+                        </Routes>
+                    </Router>
                 </>
             ) : (
                 <Login />
