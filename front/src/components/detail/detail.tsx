@@ -20,7 +20,19 @@ const Detail = () => {
             </div>
             <div className="interaction-bar">
                 <button className="like-button">👍 いいね</button>
-                <button className="favorite-button">⭐ お気に入り</button>
+            </div>
+            <div className="comment-section">
+                <h2 className="comment-title">コメント</h2>
+                <div className="comment-form">
+                    <textarea
+                        placeholder="コメントを入力してください"
+                        className="comment-input"
+                    />
+                    <button className="comment-button">コメントを追加</button>
+                </div>
+                <div className="comment-list">
+                    <div className="comment-item">コメントを残しています。</div>
+                </div>
             </div>
         </div>
     );
