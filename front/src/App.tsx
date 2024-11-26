@@ -34,9 +34,9 @@ function App() {
         <div>
             {user ? (
                 <>
-                    <Header />
-                    <Search />
                     <Router>
+                        <Header />
+                        <Search />
                         <Routes>
                             <Route path="/" element={<List />} />
                             <Route

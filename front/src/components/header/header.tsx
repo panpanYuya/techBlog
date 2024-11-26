@@ -1,12 +1,13 @@
 import React from "react";
 import "./header.scss";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
         <header className="header">
-            <a href="#" className="home-link">
+            <Link to="/" className="home-link">
                 ホーム
-            </a>
+            </Link>
             <div className="user-icon">
                 <img src="logo.png" alt="User Icon" />
             </div>
