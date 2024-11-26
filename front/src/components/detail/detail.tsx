@@ -1,7 +1,31 @@
 import React from "react";
 import "./detail.scss";
+import {
+    collection,
+    DocumentData,
+    documentId,
+    query,
+    Query,
+    where,
+} from "firebase/firestore";
+import { db } from "../../firebase";
+import useCollection from "../../hooks/useCollection";
+import { useParams } from "react-router-dom";
 
 const Detail = () => {
+    let { postId } = useParams();
+    console.log(`postId:${postId}`);
+
+    const collectionPostsDetailRef: Query<DocumentData> = query(
+        collection(db, "posts"),
+        where(documentId(), "==", postId)
+    );
+
+    const { data: articleData, error } = useCollection(
+        collectionPostsDetailRef
+    );
+    console.log(JSON.stringify(articleData));
+
     return (
         <div className="article-detail">
             <h1 className="article-title">記事タイトル</h1>

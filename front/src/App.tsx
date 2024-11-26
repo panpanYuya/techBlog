@@ -39,7 +39,10 @@ function App() {
                     <Router>
                         <Routes>
                             <Route path="/" element={<List />} />
-                            <Route path="/detail" element={<Detail />} />
+                            <Route
+                                path="/detail/:postId"
+                                element={<Detail />}
+                            />
                         </Routes>
                     </Router>
                 </>
