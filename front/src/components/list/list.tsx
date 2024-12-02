@@ -10,6 +10,7 @@ import {
     Timestamp,
 } from "firebase/firestore";
 import useCollection from "../../hooks/useCollection";
+import { useNavigate } from "react-router-dom";
 
 interface Articles {
     id: string;
@@ -28,6 +29,8 @@ const List = () => {
     const collectionPostsRef: Query<DocumentData> = query(
         collection(db, "posts")
     );
+
+    const navigate = useNavigate();
 
     //カスタムHooks使用して、Firbaseからリアルタイムで取得
     const { data: articleData, error } = useCollection(collectionPostsRef);
@@ -68,13 +71,21 @@ const List = () => {
         return <div className="error-message">Error: {error}</div>;
     }
 
+    const goToArticleDetail = (articleId: string) => {
+        navigate(`/detail/${articleId}`);
+    };
+
     return (
         <div className="article-list">
             {/* ログアウトボタン仮置き、ブランチを切って再度修正予定 */}
             <button onClick={() => auth.signOut()}>ログアウト</button>
             {articles.map((article) => {
                 return (
-                    <div className="article-card" key={article.id}>
+                    <div
+                        className="article-card"
+                        key={article.id}
+                        onClick={() => goToArticleDetail(article.id)}
+                    >
                         <h2 className="article-title">{article.title}</h2>
                         <p className="article-tags">#タグ1 #タグ3</p>
                         <p className="article-author">

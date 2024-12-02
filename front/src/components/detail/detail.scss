@@ -1,0 +1,141 @@
+.article-detail {
+    max-width: 800px;
+    margin: 100px auto 20px; // ヘッダー分の余白を追加
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .article-title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .article-author {
+        font-size: 0.9rem;
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .article-tags {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+
+    .article-content {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 30px;
+
+        p {
+            margin-bottom: 20px;
+        }
+    }
+
+    .interaction-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+
+        .like-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+
+    .comment-section {
+        .comment-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+
+            .comment-input {
+                width: 100%;
+                height: 80px;
+                padding: 10px;
+                border: 1px solid #e0e0e0;
+                border-radius: 5px;
+                font-size: 1rem;
+                resize: none;
+            }
+
+            .comment-button {
+                align-self: flex-end;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #ffffff;
+                border: none;
+                border-radius: 5px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+        }
+
+        .comment-list {
+            .comment-item {
+                padding: 10px;
+                margin-bottom: 10px;
+                background-color: #f8f9fa;
+                border: 1px solid #e0e0e0;
+                border-radius: 5px;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}
+
+// レスポンシブ対応
+@media (max-width: 600px) {
+    .article-detail {
+        padding: 15px;
+
+        .article-title {
+            font-size: 1.5rem;
+        }
+
+        .article-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .interaction-bar .like-button {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+        }
+
+        .comment-form .comment-button {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+        }
+
+        .comment-list .comment-item {
+            font-size: 0.85rem;
+        }
+    }
+}
