@@ -1,0 +1,106 @@
+.article-post {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 20px;
+
+    .title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .content-wrapper {
+        display: flex;
+        gap: 20px;
+
+        .post-form {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                label {
+                    font-size: 1rem;
+                    color: #333;
+                }
+
+                input,
+                textarea {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 5px;
+                    font-size: 1rem;
+                }
+
+                textarea {
+                    resize: none;
+                }
+            }
+
+            .submit-button {
+                padding: 10px 20px;
+                font-size: 1.2rem;
+                color: #ffffff;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+        }
+
+        .markdown-preview {
+            flex: 1 1 50%;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+
+            .preview-title {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 15px;
+            }
+
+            p,
+            h1,
+            h2,
+            h3,
+            ul,
+            ol,
+            pre {
+                margin-bottom: 15px;
+            }
+
+            code {
+                background-color: #e9ecef;
+                padding: 2px 4px;
+                border-radius: 3px;
+                font-family: monospace;
+            }
+        }
+    }
+}
+
+// レスポンシブ対応
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+
+        .post-form,
+        .markdown-preview {
+            flex: 1 1 100%;
+        }
+    }
+}

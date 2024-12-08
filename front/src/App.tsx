@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import "./App.scss";
 import Login from "./components/login/login";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
 import List from "./components/list/list";
-import { auth } from "./firebase";
-import { login, logout } from "./features/userSlice";
 import Header from "./components/header/header";
 import Search from "./components/search/search";
 import Detail from "./components/detail/detail";
+import Create from "./components/create/create";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { auth } from "./firebase";
+import { login, logout } from "./features/userSlice";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
                                 path="/detail/:postId"
                                 element={<Detail />}
                             />
+                            <Route path="/create" element={<Create />} />ß
                         </Routes>
                     </Router>
                 </>
