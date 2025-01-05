@@ -29,18 +29,18 @@
 
 -   ログイン画面
 
-## ![ログイン画面](../readme-pic/login.png)
+## ![ログイン画面](./readme-pic/login.png)
 
 -   記事一覧
 
-## ![記事一覧](../readme-pic/list.png)
+## ![記事一覧](./readme-pic/list.png)
 
 -   記事作成
 
-## ![記事作成](../readme-pic/create-article.png)
+## ![記事作成](./readme-pic/create-article.png)
 
 -   記事詳細
 
-## ![記事詳細](../readme-pic/detail1.png)
+## ![記事詳細](./readme-pic/detail1.png)
 
-## ![記事詳細](../readme-pic/detail2.png)
+## ![記事詳細](./readme-pic/detail2.png)
