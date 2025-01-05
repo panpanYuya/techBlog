@@ -1,15 +1,29 @@
 import React, { useState } from "react";
 import "./login.scss";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../firebase";
+import { auth, db, provider } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     const signIn = () => {
-        signInWithPopup(auth, provider).catch((error) => {
-            setErrorMessage("ログインに失敗しました。");
-        });
+        signInWithPopup(auth, provider)
+            .then(async (result) => {
+                const user = result.user;
+                await setDoc(
+                    doc(db, "users", user.uid),
+                    {
+                        uid: user.uid,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                    },
+                    { merge: true }
+                );
+            })
+            .catch((error) => {
+                setErrorMessage(`ログインに失敗しました。${error.message}`);
+            });
     };
 
     return (

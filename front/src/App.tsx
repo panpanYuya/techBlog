@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
 import Login from "./components/login/login";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
 import List from "./components/list/list";
+import Header from "./components/header/header";
+import Search from "./components/search/search";
+import Detail from "./components/detail/detail";
+import Create from "./components/create/create";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { auth } from "./firebase";
 import { login, logout } from "./features/userSlice";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
     const user = useAppSelector((state) => state.user.user);
@@ -27,7 +31,28 @@ function App() {
         });
     }, [dispatch]);
 
-    return <div>{user ? <List /> : <Login />}</div>;
+    return (
+        <div>
+            {user ? (
+                <>
+                    <Router>
+                        <Header />
+                        <Search />
+                        <Routes>
+                            <Route path="/" element={<List />} />
+                            <Route
+                                path="/detail/:postId"
+                                element={<Detail />}
+                            />
+                            <Route path="/create" element={<Create />} />ß
+                        </Routes>
+                    </Router>
+                </>
+            ) : (
+                <Login />
+            )}
+        </div>
+    );
 }
 
 export default App;
