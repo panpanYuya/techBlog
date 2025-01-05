@@ -5,6 +5,7 @@ import {
     collection,
     DocumentData,
     getDocs,
+    orderBy,
     Query,
     query,
     Timestamp,
@@ -16,7 +17,9 @@ interface Articles {
     id: string;
     title: string;
     content: string;
-    updateAt: Timestamp;
+    tags: string[];
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
     author: {
         userId: string;
         userName: string;
@@ -26,18 +29,24 @@ interface Articles {
 const List = () => {
     //取得した記事データを格納するためのステート
     const [articles, setArticles] = useState<Articles[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const collectionPostsRef: Query<DocumentData> = query(
-        collection(db, "posts")
+        collection(db, "posts"),
+        orderBy("createdAt", "desc")
     );
 
     const navigate = useNavigate();
 
     //カスタムHooks使用して、Firbaseからリアルタイムで取得
-    const { data: articleData, error } = useCollection(collectionPostsRef);
+    const { data: articleData, error: useCollectionError } =
+        useCollection(collectionPostsRef);
 
     //カスタムHooksから取得した値をArticle型に変換し、記事一覧にセット
     useEffect(() => {
         const getArticlesWithUser = async () => {
+            if (useCollectionError) {
+                setErrorMessage("データ取得中にエラーが発生しました");
+            }
             const articleCollection: Articles[] = await Promise.all(
                 articleData.map(async (article) => {
                     //投稿コレクションのユーザーサブコレクションを取得
@@ -51,35 +60,56 @@ const List = () => {
                                   userSnapshot.docs[0].data().userName
                               ),
                           }
-                        : { userId: "", userName: "現在は存在しないユーザー" };
+                        : {
+                              userId: "",
+                              userName: "現在は存在しないユーザー",
+                          };
                     return {
                         id: article.id,
                         title: article.title,
                         content: article.content,
-                        updateAt: article.updateAt,
+                        tags: article.tags,
+                        createdAt: article.createdAt,
+                        updatedAt: article.updatedAt,
                         author: user,
                     };
                 })
             );
-            setArticles(articleCollection);
+            setArticles(
+                articleCollection.filter((article) => article !== null)
+            );
         };
         getArticlesWithUser();
-    }, [articleData]);
+    }, [articleData, useCollectionError]);
 
     // エラーが存在する場合はエラーメッセージを表示
-    if (error) {
-        return <div className="error-message">Error: {error}</div>;
+    if (errorMessage) {
+        return <div className="error-message">Error: {errorMessage}</div>;
     }
 
     const goToArticleDetail = (articleId: string) => {
         navigate(`/detail/${articleId}`);
     };
 
+    const gotoCreatArticle = () => {
+        navigate(`/create`);
+    };
+
     return (
         <div className="article-list">
-            {/* ログアウトボタン仮置き、ブランチを切って再度修正予定 */}
-            <button onClick={() => auth.signOut()}>ログアウト</button>
+            {/* 記事投稿用のカード */}
+            <div
+                className="article-card create-article-card"
+                onClick={() => gotoCreatArticle()}
+            >
+                <h2 className="article-title">新しい記事を投稿する</h2>
+                <p className="article-description">
+                    クリックして新しい記事を作成してください。
+                </p>
+            </div>
             {articles.map((article) => {
+                console.log(`article:${JSON.stringify(article)}`);
+                console.log(`tagsFlg:${Array.isArray(article.tags)}`);
                 return (
                     <div
                         className="article-card"
@@ -87,9 +117,23 @@ const List = () => {
                         onClick={() => goToArticleDetail(article.id)}
                     >
                         <h2 className="article-title">{article.title}</h2>
-                        <p className="article-tags">#タグ1 #タグ3</p>
+                        <p className="article-tags">
+                            {article.tags.map((tag) => {
+                                return (
+                                    <span key={tag} className="tag">
+                                        #{tag}
+                                    </span>
+                                );
+                            })}
+                        </p>
                         <p className="article-author">
                             {article.author?.userName}
+                        </p>
+                        <p className="article-dates">
+                            作成日: {article.createdAt.toString()}
+                        </p>
+                        <p className="article-dates">
+                            更新日: {article.updatedAt.toString()}
                         </p>
                     </div>
                 );

@@ -21,6 +21,7 @@ interface Article {
     title: string;
     content: string;
     updateAt: Timestamp;
+    tags: string[];
     author: {
         userId: string;
         userName: string;
@@ -71,6 +72,7 @@ const Detail = () => {
                             id: article.id,
                             title: article.title,
                             content: processedValue,
+                            tags: article.tags,
                             updateAt: article.updateAt,
                             author: user,
                         };
@@ -95,7 +97,15 @@ const Detail = () => {
                         <p className="article-author">
                             {article.author.userName}
                         </p>
-                        <p className="article-tags">#タグ1 #タグ2 #タグ3</p>
+                        <p className="article-tags">
+                            {article.tags.map((tag) => {
+                                return (
+                                    <span key={tag} className="tag">
+                                        #{tag}
+                                    </span>
+                                );
+                            })}
+                        </p>
                         <div className="article-content">
                             <Markdown remarkPlugins={[remarkGfm]}>
                                 {article.content}

@@ -1,6 +1,7 @@
 import React from "react";
 import "./header.scss";
 import { Link } from "react-router-dom";
+import { auth } from "../../firebase";
 
 const Header = () => {
     return (
@@ -8,8 +9,8 @@ const Header = () => {
             <Link to="/" className="home-link">
                 ホーム
             </Link>
-            <div className="user-icon">
-                <img src="logo.png" alt="User Icon" />
+            <div className="logout-link" onClick={() => auth.signOut()}>
+                ログアウト
             </div>
         </header>
     );
