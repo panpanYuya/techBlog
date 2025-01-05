@@ -10,15 +10,15 @@
     width: 100%;
     z-index: 1000;
 
-    .home-link {
+    .home-link,
+    .logout-link {
         text-decoration: none;
         font-size: 1.2rem;
         color: #007bff;
-    }
+        cursor: pointer;
 
-    .user-icon img {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }

@@ -91,10 +91,22 @@ const List = () => {
         navigate(`/detail/${articleId}`);
     };
 
+    const gotoCreatArticle = () => {
+        navigate(`/create`);
+    };
+
     return (
         <div className="article-list">
-            {/* ログアウトボタン仮置き、ブランチを切って再度修正予定 */}
-            <button onClick={() => auth.signOut()}>ログアウト</button>
+            {/* 記事投稿用のカード */}
+            <div
+                className="article-card create-article-card"
+                onClick={() => gotoCreatArticle()}
+            >
+                <h2 className="article-title">新しい記事を投稿する</h2>
+                <p className="article-description">
+                    クリックして新しい記事を作成してください。
+                </p>
+            </div>
             {articles.map((article) => {
                 console.log(`article:${JSON.stringify(article)}`);
                 console.log(`tagsFlg:${Array.isArray(article.tags)}`);
