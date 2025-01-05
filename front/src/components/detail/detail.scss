@@ -11,18 +11,21 @@
         font-size: 2rem;
         color: #333;
         margin-bottom: 15px;
+        word-wrap: break-word; /* 長い単語を折り返し */
     }
 
     .article-author {
         font-size: 0.9rem;
         color: #007bff;
         margin-bottom: 15px;
+        word-wrap: break-word;
     }
 
     .article-tags {
         font-size: 0.9rem;
         color: #6c757d;
         margin-bottom: 20px;
+        word-wrap: break-word;
     }
 
     .article-content {
@@ -31,8 +34,26 @@
         line-height: 1.8;
         margin-bottom: 30px;
 
+        max-width: 100%; /* 親要素内に収まるよう設定 */
+        overflow-x: auto; /* 横スクロールを追加 */
+        white-space: pre-wrap; /* 折り返しを防ぎながら改行を保持 */
+        word-wrap: break-word; /* 長い単語を折り返す */
+        padding: 10px;
+        background-color: #f9f9f9; /* 背景色を追加してスクロール部分を目立たせる */
+        border: 1px solid #e0e0e0; /* 見やすい境界線を追加 */
+
         p {
             margin-bottom: 20px;
+        }
+
+        code {
+            word-wrap: normal; /* コード部分は横スクロール優先 */
+            overflow-x: auto; /* コード内で横スクロール対応 */
+            display: block;
+            background-color: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
         }
     }
 
@@ -105,6 +126,8 @@
                 border: 1px solid #e0e0e0;
                 border-radius: 5px;
                 font-size: 0.9rem;
+                word-wrap: break-word; /* コメントの長い単語も折り返し */
+                overflow-wrap: break-word;
             }
         }
     }
