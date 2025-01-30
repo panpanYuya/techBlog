@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./detail.scss";
 import {
     collection,
+    deleteDoc,
+    doc,
     DocumentData,
     documentId,
     getDocs,
@@ -12,9 +14,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useCollection from "../../hooks/useCollection";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useAppSelector } from "../../app/hooks";
 
 interface Article {
     id: string;
@@ -31,11 +34,21 @@ interface Article {
 const Detail = () => {
     let { postId } = useParams();
     const [article, setArticle] = useState<Article[]>([]);
+    const [uid, setUid] = useState<string>("");
+    const user = useAppSelector((state) => state.user.user);
+    useEffect(() => {
+        if (user?.userId !== undefined) {
+            setUid(user?.userId);
+        } else {
+            setUid("");
+        }
+    }, []);
+
+    const navigate = useNavigate();
     const collectionPostsDetailRef: Query<DocumentData> = query(
         collection(db, "posts"),
         where(documentId(), "==", postId)
     );
-
     const { data: articleData, error } = useCollection(
         collectionPostsDetailRef
     );
@@ -51,7 +64,7 @@ const Detail = () => {
                         );
                         const user = userSnapshot.docs.length
                             ? {
-                                  userId: userSnapshot.docs[0].id,
+                                  userId: userSnapshot.docs[0].data().userId,
                                   userName: String(
                                       userSnapshot.docs[0].data().userName
                                   ),
@@ -79,10 +92,31 @@ const Detail = () => {
                     })
                 );
                 setArticle(articleCollection);
-            } catch (error) {}
+            } catch (error) {
+                console.error("postIdがありません。");
+            }
         };
         getArticlesWithUser();
     }, [articleData]);
+
+    console.log(`article:${JSON.stringify(article)}`);
+
+    //記事削除機能のメモ
+    const handleDelete = async () => {
+        if (!article) return;
+        const confirmDelete = window.confirm("本当にこの記事を削除しますか？");
+        if (!confirmDelete) return;
+        try {
+            if (postId) {
+                await deleteDoc(doc(db, "posts", postId));
+            } else {
+                console.error("postIdがありません。");
+            }
+            navigate("/"); // 削除後にトップページへ遷移
+        } catch (error) {
+            console.error("postIdがありません。");
+        }
+    };
 
     if (error) {
         return <div className="error-message">エラー: {error}</div>;
@@ -111,10 +145,17 @@ const Detail = () => {
                                 {article.content}
                             </Markdown>
                         </div>
+                        {uid === article.author.userId && (
+                            <button
+                                className="delete-button"
+                                onClick={handleDelete}
+                            >
+                                🗑️ 記事を削除
+                            </button>
+                        )}
                     </>
                 );
             })}
-
             <div className="interaction-bar">
                 <button className="like-button">👍 いいね</button>
             </div>
