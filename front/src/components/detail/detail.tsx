@@ -35,7 +35,9 @@ const Detail = () => {
     let { postId } = useParams();
     const [article, setArticle] = useState<Article[]>([]);
     const [uid, setUid] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const user = useAppSelector((state) => state.user.user);
+
     useEffect(() => {
         if (user?.userId !== undefined) {
             setUid(user?.userId);
@@ -49,9 +51,16 @@ const Detail = () => {
         collection(db, "posts"),
         where(documentId(), "==", postId)
     );
-    const { data: articleData, error } = useCollection(
+    const { data: articleData, error: firebaseError } = useCollection(
         collectionPostsDetailRef
     );
+
+    useEffect(() => {
+        if (firebaseError) {
+            setErrorMessage(firebaseError);
+        }
+    }, [firebaseError]);
+
     //カスタムHooksから取得した値をArticle型に変換し、記事一覧にセット
     useEffect(() => {
         const getArticlesWithUser = async () => {
@@ -99,8 +108,6 @@ const Detail = () => {
         getArticlesWithUser();
     }, [articleData]);
 
-    console.log(`article:${JSON.stringify(article)}`);
-
     //記事削除機能のメモ
     const handleDelete = async () => {
         if (!article) return;
@@ -110,16 +117,16 @@ const Detail = () => {
             if (postId) {
                 await deleteDoc(doc(db, "posts", postId));
             } else {
-                console.error("postIdがありません。");
+                setErrorMessage("投稿記事が見つかりません。");
             }
             navigate("/"); // 削除後にトップページへ遷移
         } catch (error) {
-            console.error("postIdがありません。");
+            setErrorMessage("投稿記事が見つかりません。");
         }
     };
 
-    if (error) {
-        return <div className="error-message">エラー: {error}</div>;
+    if (errorMessage) {
+        return <div className="error-message">エラー: {errorMessage}</div>;
     }
 
     return (
