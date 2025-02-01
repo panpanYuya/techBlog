@@ -38,8 +38,7 @@ const List = () => {
     const collectionPostsRef: Query<DocumentData> = keyword.trim()
         ? query(
               collection(db, "posts"),
-              where("tags", "array-contains", keyword.trim()),
-              orderBy("createdAt", "desc")
+              where("tags", "array-contains", keyword.trim())
           )
         : query(collection(db, "posts"), orderBy("createdAt", "desc"));
 
