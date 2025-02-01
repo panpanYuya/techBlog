@@ -108,8 +108,6 @@ const List = () => {
                 </p>
             </div>
             {articles.map((article) => {
-                console.log(`article:${JSON.stringify(article)}`);
-                console.log(`tagsFlg:${Array.isArray(article.tags)}`);
                 return (
                     <div
                         className="article-card"
