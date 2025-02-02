@@ -11,7 +11,7 @@
         font-size: 2rem;
         color: #333;
         margin-bottom: 15px;
-        word-wrap: break-word; /* 長い単語を折り返し */
+        word-wrap: break-word;
     }
 
     .article-author {
@@ -54,6 +54,34 @@
             padding: 2px 4px;
             border-radius: 3px;
             font-family: monospace;
+        }
+    }
+
+    // 削除ボタンのスタイル
+    .delete-button {
+        display: inline-block;
+        float: right;
+        background-color: #dc3545; // 赤色
+        color: #fff;
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+        margin-bottom: 10px;
+
+        &:hover {
+            background-color: #c82333; // ホバー時の色
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &:active {
+            background-color: #a71d2a;
         }
     }
 
@@ -126,7 +154,7 @@
                 border: 1px solid #e0e0e0;
                 border-radius: 5px;
                 font-size: 0.9rem;
-                word-wrap: break-word; /* コメントの長い単語も折り返し */
+                word-wrap: break-word;
                 overflow-wrap: break-word;
             }
         }
@@ -159,6 +187,17 @@
 
         .comment-list .comment-item {
             font-size: 0.85rem;
+        }
+
+        // モバイルでは削除ボタンを中央に配置
+        .delete-button {
+            float: none;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 1rem;
         }
     }
 }

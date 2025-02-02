@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./detail.scss";
 import {
     collection,
+    deleteDoc,
+    doc,
     DocumentData,
     documentId,
     getDocs,
@@ -12,9 +14,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useCollection from "../../hooks/useCollection";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useAppSelector } from "../../app/hooks";
 
 interface Article {
     id: string;
@@ -31,14 +34,33 @@ interface Article {
 const Detail = () => {
     let { postId } = useParams();
     const [article, setArticle] = useState<Article[]>([]);
+    const [uid, setUid] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const user = useAppSelector((state) => state.user.user);
+
+    useEffect(() => {
+        if (user?.userId !== undefined) {
+            setUid(user?.userId);
+        } else {
+            setUid("");
+        }
+    }, []);
+
+    const navigate = useNavigate();
     const collectionPostsDetailRef: Query<DocumentData> = query(
         collection(db, "posts"),
         where(documentId(), "==", postId)
     );
-
-    const { data: articleData, error } = useCollection(
+    const { data: articleData, error: firebaseError } = useCollection(
         collectionPostsDetailRef
     );
+
+    useEffect(() => {
+        if (firebaseError) {
+            setErrorMessage(firebaseError);
+        }
+    }, [firebaseError]);
+
     //カスタムHooksから取得した値をArticle型に変換し、記事一覧にセット
     useEffect(() => {
         const getArticlesWithUser = async () => {
@@ -51,7 +73,7 @@ const Detail = () => {
                         );
                         const user = userSnapshot.docs.length
                             ? {
-                                  userId: userSnapshot.docs[0].id,
+                                  userId: userSnapshot.docs[0].data().userId,
                                   userName: String(
                                       userSnapshot.docs[0].data().userName
                                   ),
@@ -79,13 +101,32 @@ const Detail = () => {
                     })
                 );
                 setArticle(articleCollection);
-            } catch (error) {}
+            } catch (error) {
+                console.error("postIdがありません。");
+            }
         };
         getArticlesWithUser();
     }, [articleData]);
 
-    if (error) {
-        return <div className="error-message">エラー: {error}</div>;
+    //記事削除機能のメモ
+    const handleDelete = async () => {
+        if (!article) return;
+        const confirmDelete = window.confirm("本当にこの記事を削除しますか？");
+        if (!confirmDelete) return;
+        try {
+            if (postId) {
+                await deleteDoc(doc(db, "posts", postId));
+            } else {
+                setErrorMessage("投稿記事が見つかりません。");
+            }
+            navigate("/"); // 削除後にトップページへ遷移
+        } catch (error) {
+            setErrorMessage("投稿記事が見つかりません。");
+        }
+    };
+
+    if (errorMessage) {
+        return <div className="error-message">エラー: {errorMessage}</div>;
     }
 
     return (
@@ -111,15 +152,22 @@ const Detail = () => {
                                 {article.content}
                             </Markdown>
                         </div>
+                        {uid === article.author.userId && (
+                            <button
+                                className="delete-button"
+                                onClick={handleDelete}
+                            >
+                                🗑️ 記事を削除
+                            </button>
+                        )}
                     </>
                 );
             })}
-
             <div className="interaction-bar">
-                <button className="like-button">👍 いいね</button>
+                {/* <button className="like-button">👍 いいね</button> */}
             </div>
             <div className="comment-section">
-                <h2 className="comment-title">コメント</h2>
+                {/* <h2 className="comment-title">コメント</h2>
                 <div className="comment-form">
                     <textarea
                         placeholder="コメントを入力してください"
@@ -129,7 +177,7 @@ const Detail = () => {
                 </div>
                 <div className="comment-list">
                     <div className="comment-item">コメントを残しています。</div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

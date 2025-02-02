@@ -3,7 +3,6 @@ import "./App.scss";
 import Login from "./components/login/login";
 import List from "./components/list/list";
 import Header from "./components/header/header";
-import Search from "./components/search/search";
 import Detail from "./components/detail/detail";
 import Create from "./components/create/create";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
@@ -37,7 +36,6 @@ function App() {
                 <>
                     <Router>
                         <Header />
-                        <Search />
                         <Routes>
                             <Route path="/" element={<List />} />
                             <Route
