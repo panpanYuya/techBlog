@@ -164,10 +164,10 @@ const Detail = () => {
                 );
             })}
             <div className="interaction-bar">
-                <button className="like-button">👍 いいね</button>
+                {/* <button className="like-button">👍 いいね</button> */}
             </div>
             <div className="comment-section">
-                <h2 className="comment-title">コメント</h2>
+                {/* <h2 className="comment-title">コメント</h2>
                 <div className="comment-form">
                     <textarea
                         placeholder="コメントを入力してください"
@@ -177,7 +177,7 @@ const Detail = () => {
                 </div>
                 <div className="comment-list">
                     <div className="comment-item">コメントを残しています。</div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
